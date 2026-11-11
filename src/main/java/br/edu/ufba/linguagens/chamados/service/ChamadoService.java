@@ -7,14 +7,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.ArrayList;
 
 @Service
 public class ChamadoService {
-    private final Map<Long, Chamado> chamados = new ConcurrentHashMap<>();
-    private final AtomicLong proximoId = new AtomicLong(11);
+    private final List<Chamado> chamados = new ArrayList<>();
+    private long proximoId = 11;
 
     public ChamadoService() {
         adicionarInicial(1, "Computador não liga", "Ana Souza", "Financeiro", Chamado.Prioridade.ALTA, Chamado.Status.ABERTO);
@@ -31,33 +29,35 @@ public class ChamadoService {
 
     private void adicionarInicial(long id, String titulo, String solicitante, String setor,
                                  Chamado.Prioridade prioridade, Chamado.Status status) {
-        chamados.put(id, new Chamado(id, titulo, solicitante, setor, prioridade, status));
+        chamados.add(new Chamado(id, titulo, solicitante, setor, prioridade, status));
     }
 
     public List<Chamado> listarTodos() {
-        return chamados.values().stream().sorted(Comparator.comparing(Chamado::id)).toList();
+        return chamados.stream().sorted(Comparator.comparing(Chamado::id)).toList();
     }
 
-    public Chamado buscarPorId(long id) { return chamados.get(id); }
+    public Chamado buscarPorId(long id) {
+        return chamados.stream().filter(chamado -> chamado.id() == id).findFirst().orElse(null);
+    }
 
     public List<Chamado> buscarPorSetor(String nome) {
-        return chamados.values().stream().filter(c -> c.setor().toLowerCase().contains(nome.toLowerCase()))
+        return chamados.stream().filter(c -> c.setor().toLowerCase().contains(nome.toLowerCase()))
                 .sorted(Comparator.comparing(Chamado::id)).toList();
     }
 
     public List<Chamado> buscarPorPrioridade(String nivel) {
         Chamado.Prioridade prioridade = Chamado.Prioridade.valueOf(nivel.toUpperCase());
-        return chamados.values().stream().filter(c -> c.prioridade() == prioridade)
+        return chamados.stream().filter(c -> c.prioridade() == prioridade)
                 .sorted(Comparator.comparing(Chamado::id)).toList();
     }
 
     public List<Chamado> buscarPorTitulo(String texto) {
-        return chamados.values().stream().filter(c -> c.titulo().toLowerCase().contains(texto.toLowerCase()))
+        return chamados.stream().filter(c -> c.titulo().toLowerCase().contains(texto.toLowerCase()))
                 .sorted(Comparator.comparing(Chamado::id)).toList();
     }
 
     public List<Chamado> listarCriticos() {
-        return chamados.values().stream().filter(c -> c.prioridade() == Chamado.Prioridade.ALTA
+        return chamados.stream().filter(c -> c.prioridade() == Chamado.Prioridade.ALTA
                         && c.status() != Chamado.Status.RESOLVIDO)
                 .sorted(Comparator.comparing(Chamado::id)).toList();
     }
@@ -70,13 +70,13 @@ public class ChamadoService {
     }
 
     private long contar(Chamado.Status status) {
-        return chamados.values().stream().filter(c -> c.status() == status).count();
+        return chamados.stream().filter(c -> c.status() == status).count();
     }
 
     public Chamado cadastrar(NovoChamadoRequest novo) {
-        long id = proximoId.getAndIncrement();
+        long id = proximoId++;
         Chamado chamado = new Chamado(id, novo.titulo(), novo.solicitante(), novo.setor(), novo.prioridade(), novo.status());
-        chamados.put(id, chamado);
+        chamados.add(chamado);
         return chamado;
     }
 }
