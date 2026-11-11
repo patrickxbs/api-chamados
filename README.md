@@ -29,10 +29,22 @@ A API ficará disponível em `http://localhost:8080`. A aplicação inicia com 1
 
 ### Exemplo de cadastro
 
-```bash
-curl -i -X POST http://localhost:8080/chamados \
-  -H 'Content-Type: application/json' \
-  -d '{"titulo":"Impressora do laboratório sem papel","solicitante":"Marina Santos","setor":"Laboratório","prioridade":"MEDIA","status":"ABERTO"}'
+```json
+{
+  "method": "POST",
+  "url": "http://localhost:8080/chamados",
+  "headers": {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "titulo": "Impressora do laboratório sem papel",
+    "solicitante": "Marina Santos",
+    "setor": "Laboratório",
+    "prioridade": "MEDIA",
+    "status": "ABERTO"
+  }
+}
 ```
 
 O identificador é gerado pelo servidor. Os campos de prioridade aceitam `BAIXA`, `MEDIA`, `ALTA`; status aceita `ABERTO`, `EM_ANDAMENTO`, `RESOLVIDO`.
@@ -45,8 +57,14 @@ Requisições executadas localmente em 10/11/2026, com a aplicação iniciada em
 
 Requisição: `GET /chamados`
 
-```bash
-curl -i http://localhost:8080/chamados
+```json
+{
+  "method": "GET",
+  "url": "http://localhost:8080/chamados",
+  "headers": {
+    "Accept": "application/json"
+  }
+}
 ```
 
 Resposta HTTP 200:
@@ -61,8 +79,14 @@ Explicação: a resposta contém os 10 chamados fictícios carregados ao iniciar
 
 Requisição: `GET /chamados/1`
 
-```bash
-curl -i http://localhost:8080/chamados/1
+```json
+{
+  "method": "GET",
+  "url": "http://localhost:8080/chamados/1",
+  "headers": {
+    "Accept": "application/json"
+  }
+}
 ```
 
 Resposta HTTP 200:
@@ -77,8 +101,14 @@ Explicação: o ID 1 existe e seus dados são retornados como um objeto JSON.
 
 Requisição: `GET /chamados/999`
 
-```bash
-curl -i http://localhost:8080/chamados/999
+```json
+{
+  "method": "GET",
+  "url": "http://localhost:8080/chamados/999",
+  "headers": {
+    "Accept": "application/json"
+  }
+}
 ```
 
 Resposta HTTP 404:
@@ -93,8 +123,14 @@ Explicação: como não há chamado com esse ID, a API responde com `NOT_FOUND`.
 
 Requisição: `GET /chamados/setor?nome=fInAnCeIrO`
 
-```bash
-curl -i 'http://localhost:8080/chamados/setor?nome=fInAnCeIrO'
+```json
+{
+  "method": "GET",
+  "url": "http://localhost:8080/chamados/setor?nome=fInAnCeIrO",
+  "headers": {
+    "Accept": "application/json"
+  }
+}
 ```
 
 Resposta HTTP 200:
@@ -109,8 +145,14 @@ Explicação: o filtro encontra os três chamados do Financeiro apesar da combin
 
 Requisição: `GET /chamados/prioridade?nivel=alta`
 
-```bash
-curl -i 'http://localhost:8080/chamados/prioridade?nivel=alta'
+```json
+{
+  "method": "GET",
+  "url": "http://localhost:8080/chamados/prioridade?nivel=alta",
+  "headers": {
+    "Accept": "application/json"
+  }
+}
 ```
 
 Resposta HTTP 200:
@@ -125,8 +167,14 @@ Explicação: são retornados os quatro chamados com prioridade `ALTA`, inclusiv
 
 Requisição: `GET /chamados/busca?texto=IMPRESSORA`
 
-```bash
-curl -i 'http://localhost:8080/chamados/busca?texto=IMPRESSORA'
+```json
+{
+  "method": "GET",
+  "url": "http://localhost:8080/chamados/busca?texto=IMPRESSORA",
+  "headers": {
+    "Accept": "application/json"
+  }
+}
 ```
 
 Resposta HTTP 200:
@@ -141,8 +189,14 @@ Explicação: o título foi encontrado mesmo com o texto de busca em letras mai�
 
 Requisição: `GET /chamados/busca?texto=termo-inexistente`
 
-```bash
-curl -i 'http://localhost:8080/chamados/busca?texto=termo-inexistente'
+```json
+{
+  "method": "GET",
+  "url": "http://localhost:8080/chamados/busca?texto=termo-inexistente",
+  "headers": {
+    "Accept": "application/json"
+  }
+}
 ```
 
 Resposta HTTP 200:
@@ -157,8 +211,14 @@ Explicação: a consulta foi válida, mas nenhum título contém o termo; por is
 
 Requisição: `GET /chamados/criticos`
 
-```bash
-curl -i http://localhost:8080/chamados/criticos
+```json
+{
+  "method": "GET",
+  "url": "http://localhost:8080/chamados/criticos",
+  "headers": {
+    "Accept": "application/json"
+  }
+}
 ```
 
 Resposta HTTP 200:
@@ -173,8 +233,14 @@ Explicação: o resultado combina prioridade `ALTA` com status diferente de `RES
 
 Requisição: `GET /chamados/resumo`
 
-```bash
-curl -i http://localhost:8080/chamados/resumo
+```json
+{
+  "method": "GET",
+  "url": "http://localhost:8080/chamados/resumo",
+  "headers": {
+    "Accept": "application/json"
+  }
+}
 ```
 
 Resposta HTTP 200:
@@ -189,10 +255,22 @@ Explicação: os totais correspondem aos 10 chamados iniciais, distribuídos ent
 
 Requisição: `POST /chamados`
 
-```bash
-curl -i -X POST http://localhost:8080/chamados \
-  -H 'Content-Type: application/json' \
-  -d '{"titulo":"Impressora do laboratorio sem papel","solicitante":"Marina Santos","setor":"Laboratorio","prioridade":"MEDIA","status":"ABERTO"}'
+```json
+{
+  "method": "POST",
+  "url": "http://localhost:8080/chamados",
+  "headers": {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "titulo": "Impressora do laboratorio sem papel",
+    "solicitante": "Marina Santos",
+    "setor": "Laboratorio",
+    "prioridade": "MEDIA",
+    "status": "ABERTO"
+  }
+}
 ```
 
 Resposta HTTP 201:
@@ -207,8 +285,14 @@ Explicação: a API recebeu o JSON, atribuiu o próximo ID disponível (11), gua
 
 Requisição: `GET /chamados/11`
 
-```bash
-curl -i http://localhost:8080/chamados/11
+```json
+{
+  "method": "GET",
+  "url": "http://localhost:8080/chamados/11",
+  "headers": {
+    "Accept": "application/json"
+  }
+}
 ```
 
 Resposta HTTP 200:
@@ -235,4 +319,4 @@ O Spring Boot usa o Jackson, integrado ao starter Web, para converter o JSON rec
 
 ### Persistência em memória
 
-Os chamados ficam em uma coleção Java (`ConcurrentHashMap`) dentro do processo da aplicação. A memória é volátil e não existe gravação em arquivo ou banco de dados; ao reiniciar, a coleção é criada novamente com os 10 dados fictícios, e os cadastros feitos durante a execução se perdem.
+Os chamados ficam em uma coleção Java (`ArrayList`) dentro do processo da aplicação. A memória é volátil e não existe gravação em arquivo ou banco de dados; ao reiniciar, a coleção é criada novamente com os 10 dados fictícios, e os cadastros feitos durante a execução se perdem.
